@@ -5,39 +5,39 @@ export default function Register() {
     <>
       <Form>
         <FormGroup>
-          <Label for="ad">ad:</Label>
+          <Label for="ad">Ad:</Label>
           <Input id="ad" name="ad" placeholder="adınızı giriniz" type="text" />
         </FormGroup>
         <FormGroup>
-          <Label for="soyad">soyad:</Label>
+          <Label for="soyad">Soyad:</Label>
           <Input
             id="soyad"
             name="soyad"
-            placeholder="soyadınızı giriniz"
+            placeholder="Soyadınızı giriniz!"
             type="text"
           />
         </FormGroup>
         <FormGroup>
-          <Label for="email">email:</Label>
+          <Label for="email">Email:</Label>
           <Input
             id="email"
             name="email"
-            placeholder="emailinizi giriniz"
+            placeholder="E-mailinizi giriniz!"
             type="email"
           />
         </FormGroup>
 
         <FormGroup>
-          <Label for="parola">parola:</Label>
+          <Label for="parola">Parola:</Label>
           <Input
-            id="examplePassword"
-            name="password"
-            placeholder="uygun bir parola seçiniz"
-            type="password"
+            id="parola"
+            name="parola"
+            placeholder="Uygun bir parola giriniz!"
+            type="parola"
           />
         </FormGroup>
 
-        <Button>KAYIT OL</Button>
+        <Button>KAYIT</Button>
       </Form>
     </>
   );
