@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Form, FormGroup, Input, Label, Button, FormFeedback, Alert } from "reactstrap";
+import { Form, FormGroup, Input, Label, Button, FormFeedback, Alert, CardFooter } from "reactstrap";
 
 const initialValues = {
   ad: "",
@@ -168,8 +168,10 @@ export default function Register() {
           KAYIT
         </Button>
       </Form>
+      <CardFooter>
       {successMessage && <Alert color="success">{successMessage}</Alert>}
       {id && <Alert color="info">Kullanıcı ID: {id}</Alert>}
+      </CardFooter>
     </>
   );
 }
