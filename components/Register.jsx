@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { Form, FormGroup, Input, Label, Button, FormFeedback } from "reactstrap";
 
@@ -24,6 +25,7 @@ export default function Register() {
     parola: false,
   });
   const [isValid, setIsValid] = useState(false);
+  const [id, setId] = useState('');
 
   const validateEmail = (email) => {
     return String(email)
@@ -71,9 +73,20 @@ export default function Register() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isValid) {
-      alert("Kayıt başarılı!");
-    }
+    if (!isValid) return;
+
+    axios
+      .post("http://reqres.in/api/users", formData)
+      .then((response) => {
+        setId(response.data.id);
+        setFormData(initialValues);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    
+
+
   };
 
   return (
@@ -137,6 +150,11 @@ export default function Register() {
 
         <Button disabled={!isValid}>KAYIT</Button>
       </Form>
+      
+      <CardFooter>
+        ID: {id}
+      </CardFooter>
+
     </>
   );
 }
