@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Form, FormGroup, Input, Label, Button, FormFeedback } from "reactstrap";
+import { Form, FormGroup, Input, Label, Button, FormFeedback, Alert } from "reactstrap";
 
 const initialValues = {
   ad: "",
@@ -24,8 +24,15 @@ export default function Register() {
     email: false,
     parola: false,
   });
+  const [touched, setTouched] = useState({
+    ad: false,
+    soyad: false,
+    email: false,
+    parola: false,
+  });
   const [isValid, setIsValid] = useState(false);
   const [id, setId] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const validateEmail = (email) => {
     return String(email)
@@ -54,7 +61,7 @@ export default function Register() {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
 
-    let newErrors = { ...errors }; // Önceki hataları kopyala
+    let newErrors = { ...errors };
 
     if (name === "ad" || name === "soyad") {
       newErrors[name] = value.trim().length < (name === "ad" ? 3 : 2);
@@ -68,7 +75,8 @@ export default function Register() {
       newErrors[name] = !regex.test(value);
     }
 
-    setErrors(newErrors); // Hataları güncelle
+    setErrors(newErrors);
+    setTouched({ ...touched, [name]: true });
   };
 
   const handleSubmit = (e) => {
@@ -80,13 +88,17 @@ export default function Register() {
       .then((response) => {
         setId(response.data.id);
         setFormData(initialValues);
+        setSuccessMessage(`Kayıt Başarılı! ID: ${response.data.id}`);
+        setTouched({
+          ad: false,
+          soyad: false,
+          email: false,
+          parola: false,
+        });
       })
       .catch((error) => {
         console.error(error);
       });
-    
-
-
   };
 
   return (
@@ -101,9 +113,10 @@ export default function Register() {
             type="text"
             onChange={handleChange}
             value={formData.ad}
-            invalid={errors.ad}
+            invalid={errors.ad && touched.ad}
+            data-cy="ad-input"
           />
-          <FormFeedback>{errorMessages.ad}</FormFeedback>
+          {errors.ad && touched.ad && <FormFeedback data-cy="error-message">{errorMessages.ad}</FormFeedback>}
         </FormGroup>
 
         <FormGroup>
@@ -115,9 +128,10 @@ export default function Register() {
             type="text"
             onChange={handleChange}
             value={formData.soyad}
-            invalid={errors.soyad}
+            invalid={errors.soyad && touched.soyad}
+            data-cy="soyad-input"
           />
-          <FormFeedback>{errorMessages.soyad}</FormFeedback>
+          {errors.soyad && touched.soyad && <FormFeedback data-cy="error-message">{errorMessages.soyad}</FormFeedback>}
         </FormGroup>
 
         <FormGroup>
@@ -129,9 +143,10 @@ export default function Register() {
             type="email"
             onChange={handleChange}
             value={formData.email}
-            invalid={errors.email}
+            invalid={errors.email && touched.email}
+            data-cy="email-input"
           />
-          <FormFeedback>{errorMessages.email}</FormFeedback>
+          {errors.email && touched.email && <FormFeedback data-cy="error-message">{errorMessages.email}</FormFeedback>}
         </FormGroup>
 
         <FormGroup>
@@ -143,18 +158,18 @@ export default function Register() {
             type="password"
             onChange={handleChange}
             value={formData.parola}
-            invalid={errors.parola}
+            invalid={errors.parola && touched.parola}
+            data-cy="parola-input"
           />
-          <FormFeedback>{errorMessages.parola}</FormFeedback>
+          {errors.parola && touched.parola && <FormFeedback data-cy="error-message">{errorMessages.parola}</FormFeedback>}
         </FormGroup>
 
-        <Button disabled={!isValid}>KAYIT</Button>
+        <Button disabled={!isValid} data-cy="submit-button">
+          KAYIT
+        </Button>
       </Form>
-      
-      <CardFooter>
-        ID: {id}
-      </CardFooter>
-
+      {successMessage && <Alert color="success">{successMessage}</Alert>}
+      {id && <Alert color="info">Kullanıcı ID: {id}</Alert>}
     </>
   );
 }
